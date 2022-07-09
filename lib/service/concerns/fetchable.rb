@@ -14,10 +14,13 @@ module Service
         end
 
         # Executes a simple GET request to the provided url.
-        def fetch(stringify = true, url)
-          response = Faraday.get url
+        def fetch(data)
+          data[:stringify] ||= true
+          response = Faraday.get data[:url]
 
-          return response.body if (response.status == 200 && stringify)
+          if (response.status == 200 && data[:stringify])
+            return data.merge!({ url: data[:url], markup: response.body })
+          end
 
           ""
         end

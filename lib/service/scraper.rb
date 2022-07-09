@@ -2,22 +2,21 @@ module Service
   class Scraper < Base
     include ::Service::Concerns::Fetchable
     include ::Service::Concerns::Parsable
+    include ::Service::Concerns::Extractable
 
-    attr_accessor :document, :persistance
+    attr_accessor :result, :persistance
 
     def initialize(url:, extractors:, persistance: :database)
       super(url: url, extractors: extractors)
 
-      @markup = ""
-      @document = nil
+      @result = nil
       @persistance = persistance
     end
 
     def exec
-      @document = (fetchable >> parsable).call url
-      extract
+      @result = (fetchable >> parsable >> extractable).call({ url: url, extractors: extractors } )
 
-      flush(format: persistance, data: extractions)
+      flush(format: persistance)
     end
   end
 end

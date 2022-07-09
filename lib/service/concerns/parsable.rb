@@ -8,8 +8,8 @@ module Service
           Proc.new(&method(:parse))
         end
 
-        def parse(markup)
-          Nokogiri::HTML.parse(markup)
+        def parse(data)
+          data.merge!({ document: Nokogiri::HTML.parse(data[:markup]) })
         end
       end
 

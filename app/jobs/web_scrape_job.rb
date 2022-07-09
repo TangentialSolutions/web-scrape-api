@@ -14,7 +14,7 @@ class WebScrapeJob < ApplicationJob
 
     Service::Scraper.new(url: url, extractors: {
         links: {
-            context: "//a[@data-tn-element='jobTitle']",
+            context: "//a",
             replace: true
         }
     }).exec

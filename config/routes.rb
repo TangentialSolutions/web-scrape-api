@@ -13,4 +13,6 @@ Rails.application.routes.draw do
 
   # Api
   get "/scrape", to: "api/scrape#get"
+  post "/scrape/pause", to: "api/scrape#pause"
+  post "/scrape/unpause", to: "api/scrape#unpause"
 end

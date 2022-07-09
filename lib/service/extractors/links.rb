@@ -11,10 +11,15 @@ module Service
           document.xpath(query).each do |tag|
             uri = URI.parse tag[:href]
 
+            # @todo: how do we pass in context of the scrape as a whole?
+            #        - we make assumptions that all internal URL's will be relative, and only label something as external
+            #          when it is an absolute URL.
+            # # @todo: refactor to query the collection to find others
+            #        - We are not currently counting the occurrences of a URL within a scrape
             links << Link.create({
                url: uri.absolute? ? tag[:href] : fully_qualified_url(url, tag[:href]),
-               external: uri.absolute?, # @todo: how do we pass in context of the scrape as a whole?
-               occurrences: 1, # @todo: refactor to query the collection to find others
+               external: uri.absolute?,
+               occurrences: 1,
              })
           end
 

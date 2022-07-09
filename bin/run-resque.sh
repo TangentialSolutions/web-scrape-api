@@ -1,1 +1,1 @@
-COUNT=4 QUEUE=default rake resque:workers
+COUNT=4 QUEUE=default,crawlers rake resque:workers

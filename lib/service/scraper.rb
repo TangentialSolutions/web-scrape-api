@@ -6,7 +6,7 @@ module Service
 
     attr_accessor :result, :persistance
 
-    def initialize(url:, extractors:, persistance: :database)
+    def initialize(url:, extractors: {}, persistance: :database)
       super(url: url, extractors: extractors)
 
       @result = nil

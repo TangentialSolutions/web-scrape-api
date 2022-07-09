@@ -1,0 +1,1 @@
+COUNT=4 QUEUE=default rake resque:workers

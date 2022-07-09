@@ -12,5 +12,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: toor
+    volumes:
+      - ./storage/mongo-data:/data/db
     ports:
       - "27017:27017"

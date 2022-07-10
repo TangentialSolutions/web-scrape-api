@@ -4,19 +4,19 @@ module Service
     include ::Service::Concerns::Parsable
     include ::Service::Concerns::Extractable
 
-    attr_accessor :result, :persistance
+    attr_accessor :result, :persistence
 
-    def initialize(url:, extractors: {}, persistance: :database)
+    def initialize(url:, extractors: {}, persistence: :database)
       super(url: url, extractors: extractors)
 
       @result = nil
-      @persistance = persistance
+      @persistence = persistence
     end
 
     def exec
       @result = (fetchable >> parsable >> extractable).call({ url: url, extractors: extractors } )
 
-      flush(format: persistance)
+      flush(format: persistence)
     end
   end
 end

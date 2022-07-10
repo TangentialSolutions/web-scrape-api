@@ -11,7 +11,12 @@ module Service
     end
 
     def exec
+      most_recent_scrape = Scrape.where(url: link.url).order(created_at: :desc).first
+      return most_recent_scrape unless recrawl || most_recent_scrape.blank?
+
       super
+
+      # @todo persist a new Crawl object here, linking it with the Scrape created in the `super` call
 
       validate_persistence
 

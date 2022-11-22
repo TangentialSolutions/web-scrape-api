@@ -2,11 +2,12 @@ module Service
   class Crawler < Scraper
     SUPPORTED_PERSISTENCE_METHODS = [:database]
 
-    attr_reader :recrawl
+    attr_reader :recrawl, :scrape_pattern
 
-    def initialize(url:, extractors: {}, persistence: :database, recrawl: false)
+    def initialize(url:, scrape_pattern: "//a", extractors: {}, persistence: :database, recrawl: false)
       super(url: url, extractors: extractors, persistence: persistence)
 
+      @scrape_pattern = scrape_pattern
       @recrawl = recrawl
     end
 
@@ -25,13 +26,17 @@ module Service
         link_uri = URI.parse link.url
         next unless canonical_uri.host&.downcase == link_uri.host&.downcase
 
-        if recrawl || Link.where(url: link.url).count <= 1
+        if should_crawl?(link)
           WebCrawlJob.perform_later(url: link.url)
         end
       end
     end
 
     private
+
+    def should_crawl?(link)
+      recrawl || Link.where(url: link.url).count <= 1
+    end
 
     def validate_persistence
       raise StandardError, "Unsupported persistence type: must be :database to use Service::Crawler" unless persistence_supported?

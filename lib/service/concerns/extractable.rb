@@ -21,6 +21,10 @@ module Service
             next unless valid_extractor?(extractor: extractor_name)
             opts ||= {}
 
+            # @todo: refactor so that an extractor name references a list of extractors
+            #       - this can be used to specify multiple rules for extraction
+            #       - specifically for crawls, we can specify rules for specific pages (it will be run on every page, which
+            #         for now is fine)
             extractions[extractor_name] = EXTRACTORS[extractor_name].extract(url: data[:url], document: data[:document], **opts)
           end
 

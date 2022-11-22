@@ -12,9 +12,15 @@ class WebScrapeJob < ApplicationJob
     #   }
     # }).exec
 
+    # Service::Scraper.new(url: url, extractors: {
+    #     links: {
+    #         context: "//a",
+    #         replace: true
+    #     }
+    # }).exec
     Service::Scraper.new(url: url, extractors: {
         links: {
-            context: "//a",
+            context: "//a[contains(@class, 'product-card__link')]",
             replace: true
         }
     }).exec
